@@ -1,0 +1,17 @@
+---
+# vars file for pipelinedb
+# vars file for ansible-roles_postgresql-install
+
+# The OS user/group
+postgresql_user: postgresql
+postgresql_group: postgresql
+
+postgresql_datadir_prefix: /data/pipelinedb
+
+postgresql_shared_buffers: 128MB
+postgresql_wal_level: minimal
+postgresql_log_destination: stderr
+postgresql_logging_collector: 'on'
+postgresql_logging_directory: log  # set to a location with ample room
+
+postgresql_network_to_allow: samenet

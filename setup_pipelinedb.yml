@@ -1,0 +1,4 @@
+---
+- hosts: pipelinedb
+  roles:
+  - { role: ansible-roles_pipelinedb }

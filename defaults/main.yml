@@ -1,0 +1,4 @@
+---
+# defaults file for pipelinedb
+
+pipeline_repo: "https://s3-us-west-2.amazonaws.com/download.pipelinedb.com/pipelinedb-0.8.1-centos7-x86_64.rpm"

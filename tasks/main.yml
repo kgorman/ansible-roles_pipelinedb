@@ -1,0 +1,34 @@
+---
+# tasks file for pipelinedb
+
+# ensure base users/groups, and software
+- group: name={{ postgresql_group }} state=present
+- user: name={{ postgresql_user }} comment="postgresql user" uid=1040 group={{ postgresql_group }}
+- yum: name=epel-release state=latest
+- yum: name={{ pipeline_repo }} state=present
+
+# make base directories
+
+- name: Create the data directory
+  file: path={{ postgresql_datadir_prefix }} state=directory owner={{ postgresql_user }} group={{ postgresql_group }}
+
+# init a db
+
+- name: Initialize a database
+  command: su - {{ postgresql_user }} -c "pipeline-init -D {{ postgresql_datadir_prefix }}"
+  ignore_errors: True
+
+# setup config details
+
+- name: Config file
+  template: src=pipeline.conf.j2 dest={{ postgresql_datadir_prefix }}/pipelinedb.conf mode=0655 owner={{ postgresql_user }} group={{ postgresql_group }}
+
+# alter pghba.conf
+
+- name: pg_hba.Conf
+  template: src=pg_hba.conf.j2 dest={{ postgresql_datadir_prefix }}/pg_hba.conf mode=0655 owner={{ postgresql_user }} group={{ postgresql_group }}
+
+# start it up
+
+- name: start pipelinedb
+  command: su - {{ postgresql_user }} -c "pipeline-ctl -D {{ postgresql_datadir_prefix }} start"
